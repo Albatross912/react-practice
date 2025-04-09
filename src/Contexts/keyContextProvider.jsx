@@ -1,14 +1,14 @@
 import React, {useState} from 'react'
 
-import keyContext from './keyValue'
+import KeyContext from './KeyContext'
 
-const keyContextProvider = ({children}) => {
-    const [key, setKey] = useState();
-    return(
-        <keyContext.Provider value={{key, setKey}}>
-            {children}
-        </keyContext.Provider>
-    )
-}
+const keyContextProvider = ({ children }) => {
+  const [key, setKey] = useState([]);
+  return (
+    <KeyContext.Provider value={{ key, setKey }}>
+      {children}
+    </KeyContext.Provider>
+  );
+};
 
 export default keyContextProvider
