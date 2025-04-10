@@ -10,7 +10,6 @@ const DeleteKey = () => {
     };
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // Here you would typically handle the logic for updating the key
         console.log('Updated key:', indexValue);
         // Reset the input field after submission
         
