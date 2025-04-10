@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import './DeleteKey.css';
 import axios from 'axios';
+import KeyContext from '../Contexts/KeyContext';
 const DeleteKey = () => {
     const [indexValue, setIndexValue] = useState(0);
+    const {key} = useContext(KeyContext);
     const handleInputChange = (event) => {
         setIndexValue(event.target.value);
     };
@@ -15,6 +17,7 @@ const DeleteKey = () => {
         await axios.delete('https://3000-idx-my-java-app-1742539032645.cluster-7ubberrabzh4qqy2g4z7wgxuw2.cloudworkstations.dev/deletekey',{
             data: {index: parseInt(indexValue)}
         })
+        key.splice(indexValue, 1)
         setIndexValue('');
     };
   return (
@@ -28,6 +31,20 @@ const DeleteKey = () => {
                 onChange={handleInputChange}
             />
             <button type="submit">Delete Key</button>
+
+            <div>
+        <ul>
+          {
+            key.map((value, index) => (
+
+              <li key={index}>
+                {value}
+              </li>
+
+            ))
+          }
+        </ul>
+      </div>
         </form>
     </div>
   );

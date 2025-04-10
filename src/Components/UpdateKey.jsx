@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import './UpdateKey.css';
 import axios from 'axios';
+import KeyContext from '../Contexts/KeyContext';
 
 function UpdateKey() {
   const [keyValue, setKeyValue] = useState('');
@@ -12,7 +13,7 @@ function UpdateKey() {
   const handleKeyChange = (event) => {
     setKeyValue(event.target.value);
   };
-
+   const {key, setKey} = useContext(KeyContext);
   const handleSubmit = async (event) => {
     event.preventDefault();
     // Here you would typically handle the logic for updating the key
@@ -21,6 +22,9 @@ function UpdateKey() {
       index: parseInt(indexValue),
       key: keyValue
     })
+    const tempKey = [...key]
+    tempKey[indexValue] = keyValue
+    setKey(tempKey)
     setIndexValue('')
     // Reset the input field after submission
     setKeyValue('');

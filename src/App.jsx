@@ -5,16 +5,17 @@ import './App.css'
 import InsertKey from './Components/InsertKey'
 import UpdateKey from './Components/UpdateKey'
 import DeleteKey from './Components/DeleteKey'
+import KeyContextProvider from './Contexts/keyContextProvider'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-        <InsertKey/>
-        <UpdateKey/>  
-        <DeleteKey/>
-    </>
+    <KeyContextProvider>
+      <InsertKey />
+      <UpdateKey />
+      <DeleteKey />
+    </KeyContextProvider>
   )
 }
 
