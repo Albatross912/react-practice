@@ -1,57 +1,57 @@
-import axios from "axios";
-import React, { useState } from "react";
+import './InsertKey.css';
+import axios from 'axios';
+import React, { useState, useContext } from 'react';
+import KeyContext from '../Contexts/KeyContext';
+import { BACKEND_URL } from '../config';
 
-const InsertKey = () => {
-  const [keyValue, setKeyValue] = useState("");
+function InsertKey () {
+  // Get emptyMessage and setEmptyMessage from context
+  const { key, setKey, emptyMessage, setEmptyMessage } = useContext(KeyContext);
+  const [keyValue, setKeyValue] = useState('');
+
   const handleInputChange = (event) => {
     setKeyValue(event.target.value);
+    // Use context setter
+    setEmptyMessage('');
   };
-  const [data, setData] = useState([]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    // Here you would typically handle the logic for updating the key
-    console.log("Updated key:", keyValue);
+    if(keyValue == null || keyValue === "") {
+      // Use context setter
+      setEmptyMessage('Please enter some input');
+      return;
+    }
+    console.log(key);
     try {
-      await axios.post(
-        "https://3000-idx-my-java-app-1742539032645.cluster-7ubberrabzh4qqy2g4z7wgxuw2.cloudworkstations.dev/insertkey",
-        { keyValue }
-      );
-      // Reset the input field after submission
-      setData((p) => [...p, keyValue]);
-      setKeyValue("");
-    } catch (e) {}
+      await axios.post(`${BACKEND_URL}/insertkey`, { keyValue });
+      setKey((p) => [...p, keyValue]);
+      setKeyValue('');
+      // Clear message on success
+      setEmptyMessage('');
+    }
+    catch (e) {
+      console.error("Error inserting key:", e);
+      setEmptyMessage('Error inserting key. Please try again.'); // Set error message via context
+    }
   };
 
   return (
-    <div className="p-4 bg-red-400">
-      <h3 className="text-lg font-bold mb-4">Insert Key</h3>
-      <form onSubmit={handleSubmit} className="mb-4">
-        <label className="block mb-2">
-          Key:
-          <input
-            type="text"
-            value={keyValue}
-            onChange={handleInputChange}
-            className="border rounded p-2 w-full mt-1"
-          />
-        </label>
-        <button
-          type="submit"
-          className="bg-blue-500 text-white px-4 py-2 rounded mt-2 hover:bg-blue-600"
-        >
+    <div>
+      {/* Use context state: emptyMessage */}
+      {emptyMessage && <p style={{ color: 'red' }}>{emptyMessage}</p>} {/* Optional styling for error */}
+      <h3>Insert Key</h3>
+      <form onSubmit={handleSubmit}>
+        key:
+        <input
+          type="text"
+          value={keyValue}
+          onChange={handleInputChange}
+        ></input>
+        <button type='submit'>
           Create Key
         </button>
       </form>
-      <div>
-        <ul className="list-disc pl-5">
-          {data.map((value, index) => (
-            <li key={index} className="mb-1">
-              {value}
-            </li>
-          ))}
-        </ul>
-      </div>
     </div>
   );
 };
