@@ -2,18 +2,25 @@ import React, {useContext, useState} from 'react';
 import './DeleteKey.css';
 import axios from 'axios';
 import KeyContext from '../Contexts/KeyContext';
+import { BACKEND_URL } from '../config'; // Import the backend URL
+
 const DeleteKey = () => {
     const [indexValue, setIndexValue] = useState(0);
-    const {key} = useContext(KeyContext);
+    const {key, setKey, emptyMessage, setEmptyMessage} = useContext(KeyContext);
     const handleInputChange = (event) => {
         setIndexValue(event.target.value);
+        setEmptyMessage('');
     };
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log('Updated key:', indexValue);
+        if(indexValue < 0 || indexValue >= key.length){
+            setEmptyMessage('Please enter valid index value');
+            return
+        }
+        // console.log('Updated key:', indexValue);
         // Reset the input field after submission
         
-        await axios.delete('https://3000-idx-my-java-app-1742539032645.cluster-7ubberrabzh4qqy2g4z7wgxuw2.cloudworkstations.dev/deletekey',{
+        await axios.delete(`${BACKEND_URL}/deletekey`,{ // Use the imported URL
             data: {index: parseInt(indexValue)}
         })
         key.splice(indexValue, 1)

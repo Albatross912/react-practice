@@ -1,42 +1,45 @@
 import './InsertKey.css';
-import axios from 'axios'
+import axios from 'axios';
 import React, { useState, useContext } from 'react';
-import keyContextProvider from '../Contexts/keyContextProvider';
 import KeyContext from '../Contexts/KeyContext';
+import { BACKEND_URL } from '../config';
 
-
-function InsertKey ()  {
-  const [emptyMessage, setEmptyMessage] = useState('');
-  const {key, setKey} = useContext(KeyContext);
+function InsertKey () {
+  // Get emptyMessage and setEmptyMessage from context
+  const { key, setKey, emptyMessage, setEmptyMessage } = useContext(KeyContext);
   const [keyValue, setKeyValue] = useState('');
-  
+
   const handleInputChange = (event) => {
     setKeyValue(event.target.value);
+    // Use context setter
     setEmptyMessage('');
   };
-  const [data, setData] = useState([])
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    if(keyValue == null || keyValue === ""){
+    if(keyValue == null || keyValue === "") {
+      // Use context setter
       setEmptyMessage('Please enter some input');
-      return
+      return;
     }
     console.log(key);
     try {
-      await axios.post('https://3000-idx-my-java-app-1742539032645.cluster-7ubberrabzh4qqy2g4z7wgxuw2.cloudworkstations.dev/insertkey', { keyValue })
-      setKey((p) => [...p, keyValue])
+      await axios.post(`${BACKEND_URL}/insertkey`, { keyValue });
+      setKey((p) => [...p, keyValue]);
       setKeyValue('');
+      // Clear message on success
+      setEmptyMessage('');
     }
     catch (e) {
-      
+      console.error("Error inserting key:", e);
+      setEmptyMessage('Error inserting key. Please try again.'); // Set error message via context
     }
   };
 
-
   return (
     <div>
-      {emptyMessage && <p style={{ color: 'red' }}>{emptyMessage}</p>}
+      {/* Use context state: emptyMessage */}
+      {emptyMessage && <p style={{ color: 'red' }}>{emptyMessage}</p>} {/* Optional styling for error */}
       <h3>Insert Key</h3>
       <form onSubmit={handleSubmit}>
         key:
