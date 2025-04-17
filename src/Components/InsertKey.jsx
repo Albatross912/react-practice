@@ -1,4 +1,3 @@
-import './InsertKey.css';
 import axios from 'axios';
 import React, { useState, useContext } from 'react';
 import KeyContext from '../Contexts/KeyContext';

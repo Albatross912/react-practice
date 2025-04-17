@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import './UpdateKey.css';
 import axios from 'axios';
 import KeyContext from '../Contexts/KeyContext';
 import { BACKEND_URL } from '../config'; // Import the backend URL

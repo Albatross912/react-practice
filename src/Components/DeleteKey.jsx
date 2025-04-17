@@ -1,5 +1,4 @@
 import React, {useContext, useState} from 'react';
-import './DeleteKey.css';
 import axios from 'axios';
 import KeyContext from '../Contexts/KeyContext';
 import { BACKEND_URL } from '../config'; // Import the backend URL
